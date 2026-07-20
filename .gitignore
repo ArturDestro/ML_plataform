@@ -1,0 +1,78 @@
+# ===== Python / Backend =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+.eggs/
+.Python
+build/
+dist/
+*.manifest
+*.spec
+
+# Ambientes virtuais
+.venv/
+venv/
+env/
+ENV/
+
+# ===== Node / Next.js Frontend =====
+node_modules/
+.next/
+out/
+.turbo/
+next-env.d.ts
+*.tsbuildinfo
+
+# ===== Modelos treinados / artefatos ML =====
+backend/storage/models/*.joblib
+backend/storage/models/*.pkl
+*.joblib
+*.pkl
+
+# Datasets enviados pelo usuário (não versionar dados)
+backend/storage/datasets/
+*.csv
+!**/sample_data/*.csv
+
+# ===== Alembic (manter versions, ignorar cache) =====
+backend/alembic/__pycache__/
+
+# ===== Variáveis de ambiente =====
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# ===== Docker =====
+*.pid
+
+# ===== Banco de dados local (se usar sqlite em algum teste) =====
+*.sqlite3
+*.db
+
+# ===== Logs =====
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ===== IDE / Editores =====
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ===== Sistema Operacional =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== Testes / Cobertura =====
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/

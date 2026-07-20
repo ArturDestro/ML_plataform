@@ -91,15 +91,6 @@ mlplat/
 └── README.md
 ```
 
-## Roadmap / Próximos passos
-
-- [ ] Autenticação e gerenciamento de usuários
-- [ ] Versionamento de modelos
-- [ ] Tuning de hiperparâmetros com GridSearchCV
-- [ ] Suporte a novos algoritmos de classificação
-- [ ] Monitoramento de modelos e experiment tracking
-- [ ] Integração com [DataDestro](#) para pré-processamento automatizado de dados
-
 ## Autor
 
 **Artur Destro**

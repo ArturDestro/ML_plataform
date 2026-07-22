@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Sidebar from "@/components/Sidebar";
+import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
   title: "ML Model Serving Platform",
@@ -13,7 +15,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body>{children}</body>
+      <body className="flex min-h-screen">
+        <Sidebar />
+        <div className="flex flex-1 flex-col">
+          <Navbar />
+          <main className="flex-1 p-6">{children}</main>
+        </div>
+      </body>
     </html>
   );
 }

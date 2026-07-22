@@ -10,11 +10,13 @@ O projeto vai além do treinamento em notebook — o objetivo é demonstrar como
 
 | Feature | Status |
 | --- | --- |
-| Setup do projeto (FastAPI + Next.js + Docker) | ✅ |
+| Setup do projeto (FastAPI + Next.js + Tailwind + Docker) | ✅ |
+| Layout inicial (Sidebar, Navbar, páginas vazias) | ✅ |
 | Upload de datasets | ⏳ |
 | Treinamento de modelos | ⏳ |
 | Avaliação de métricas | ⏳ |
 | API de predição | ⏳ |
+| Banco de dados + migrations (Alembic) | ⏳ |
 | Deploy na AWS | ⏳ |
 
 ## Arquitetura
@@ -79,17 +81,63 @@ O projeto vai além do treinamento em notebook — o objetivo é demonstrar como
 
 4. Acesse:
    - Frontend: [http://localhost:3000](http://localhost:3000)
-   - Backend (docs): [http://localhost:8000/docs](http://localhost:8000/docs)
+   - Backend (Swagger docs): [http://localhost:8000/docs](http://localhost:8000/docs)
+   - Health check: [http://localhost:8000/health](http://localhost:8000/health)
 
 ## Estrutura do projeto
 
 ```
 mlplat/
-├── backend/        # API FastAPI, serviços e integração com ML
-├── frontend/        # Aplicação Next.js
+├── backend/
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── app/
+│       ├── main.py              # monta a aplicação e registra as rotas
+│       ├── core/
+│       │   ├── config.py        # variáveis de ambiente (Pydantic Settings)
+│       │   └── database.py      # engine, sessão e conexão SQLAlchemy
+│       ├── api/
+│       │   └── routes/
+│       │       ├── datasets.py
+│       │       ├── training.py
+│       │       └── predictions.py
+│       ├── services/             # lógica de negócio
+│       ├── models/               # tabelas do banco (SQLAlchemy)
+│       ├── schemas/              # formato de entrada/saída da API (Pydantic)
+│       └── ml/                   # treino, avaliação e serialização (scikit-learn/joblib)
+│
+├── frontend/
+│   ├── Dockerfile
+│   ├── package.json
+│   └── app/
+│       ├── layout.tsx            # layout raiz (Sidebar + Navbar)
+│       ├── page.tsx              # home
+│       ├── upload/page.tsx
+│       ├── train/page.tsx
+│       ├── models/page.tsx
+│       └── predict/page.tsx
+│   └── components/
+│       ├── Sidebar.tsx
+│       └── Navbar.tsx
+│
 ├── docker-compose.yml
+├── .env.example
 └── README.md
 ```
+
+## Roadmap / Próximos passos
+
+- [ ] Dataset Management: upload de CSV, listagem e preview
+- [ ] Configuração do Alembic (migrations)
+- [ ] Training: treino de modelos e persistência via Joblib
+- [ ] Métricas: Accuracy, Precision, Recall, F1-Score
+- [ ] Prediction API: inferência em tempo real
+- [ ] Autenticação e gerenciamento de usuários
+- [ ] Versionamento de modelos
+- [ ] Tuning de hiperparâmetros com GridSearchCV
+- [ ] Suporte a novos algoritmos de classificação
+- [ ] Monitoramento de modelos e experiment tracking
+- [ ] Integração com [DataDestro](#) para pré-processamento automatizado de dados
 
 ## Autor
 

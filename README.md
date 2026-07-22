@@ -137,7 +137,7 @@ mlplat/
 - [ ] Tuning de hiperparâmetros com GridSearchCV
 - [ ] Suporte a novos algoritmos de classificação
 - [ ] Monitoramento de modelos e experiment tracking
-- [ ] Integração com [DataDestro](#) para pré-processamento automatizado de dados
+- [ ] Integração com [DataDestro](datadestro.com) para pré-processamento automatizado de dados
 
 ## Autor
 

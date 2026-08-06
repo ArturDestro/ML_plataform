@@ -29,6 +29,7 @@ services:
     volumes:
       - ./backend:/app
       - models_data:/app/storage/models
+      - datasets_data:/app/storage/datasets
     ports:
       - "8000:8000"
     depends_on:
@@ -54,3 +55,4 @@ services:
 volumes:
   pgdata:
   models_data:
+  datasets_data:

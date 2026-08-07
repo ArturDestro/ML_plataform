@@ -81,3 +81,42 @@ export async function fetchModels(): Promise<Model[]> {
 
   return response.json();
 }
+
+export interface Prediction {
+  id: number;
+  model_id: number;
+  input_data: string;
+  result: string;
+  probability: number | null;
+  created_at: string;
+}
+
+export interface PredictRequest {
+  model_id: number;
+  input_data: Record<string, number>;
+}
+
+export async function predict(data: PredictRequest): Promise<Prediction> {
+  const response = await fetch(`${API_URL}/predict/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.detail || "Falha ao fazer a predição");
+  }
+
+  return response.json();
+}
+
+export async function fetchPredictions(): Promise<Prediction[]> {
+  const response = await fetch(`${API_URL}/predict/`);
+
+  if (!response.ok) {
+    throw new Error("Falha ao buscar predições");
+  }
+
+  return response.json();
+}

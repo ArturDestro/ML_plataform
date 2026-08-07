@@ -15,6 +15,7 @@ from app.core.database import Base
 from app.core.config import settings
 from app.models.dataset import Dataset  # noqa
 from app.models.model import Model  # noqa
+from app.models.prediction import Prediction  # noqa
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

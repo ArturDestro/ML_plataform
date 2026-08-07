@@ -16,7 +16,7 @@ O projeto vai além do treinamento em notebook — o objetivo é demonstrar como
 | Upload de datasets | ✅ |
 | Treinamento de modelos (Logistic Regression, Random Forest) | ✅ |
 | Avaliação de métricas (Accuracy, Precision, Recall, F1) | ✅ |
-| API de predição | ⏳ |
+| API de predição (com histórico e probabilidade) | ✅ |
 | Deploy na AWS | ⏳ |
 
 ## Arquitetura
@@ -52,8 +52,8 @@ O projeto vai além do treinamento em notebook — o objetivo é demonstrar como
 - Treinamento de modelos de classificação (Logistic Regression e Random Forest)
 - Avaliação de performance (Accuracy, Precision, Recall, F1-Score)
 - Serialização de modelos treinados com Joblib
-- API REST para inferência em tempo real *(em desenvolvimento)*
-- Histórico de predições persistido em PostgreSQL *(em desenvolvimento)*
+- API REST para inferência em tempo real, com probabilidade/confiança do resultado
+- Histórico de predições persistido em PostgreSQL
 
 ## Como rodar localmente
 
@@ -110,15 +110,19 @@ mlplat/
 │       │       └── predictions.py
 │       ├── services/             # lógica de negócio
 │       │   ├── dataset_service.py
-│       │   └── training_service.py
+│       │   ├── training_service.py
+│       │   └── prediction_service.py
 │       ├── models/               # tabelas do banco (SQLAlchemy)
 │       │   ├── dataset.py
-│       │   └── model.py
+│       │   ├── model.py
+│       │   └── prediction.py
 │       ├── schemas/              # formato de entrada/saída da API (Pydantic)
 │       │   ├── dataset.py
-│       │   └── model.py
+│       │   ├── model.py
+│       │   └── prediction.py
 │       └── ml/
-│           └── train.py          # treino, avaliação e serialização (scikit-learn/joblib)
+│           ├── train.py          # treino, avaliação e serialização (scikit-learn/joblib)
+│           └── predict.py        # carrega modelo salvo e executa inferência
 │
 ├── frontend/
 │   ├── Dockerfile
@@ -131,7 +135,7 @@ mlplat/
 │       ├── upload/page.tsx       # upload e listagem de datasets
 │       ├── train/page.tsx        # treino de modelos
 │       ├── models/page.tsx       # listagem de modelos e métricas
-│       └── predict/page.tsx
+│       └── predict/page.tsx      # formulário dinâmico de predição
 │   └── components/
 │       ├── Sidebar.tsx
 │       └── Navbar.tsx
@@ -147,7 +151,7 @@ mlplat/
 - [x] Configuração do Alembic (migrations)
 - [x] Training: treino de modelos e persistência via Joblib
 - [x] Métricas: Accuracy, Precision, Recall, F1-Score
-- [ ] Prediction API: inferência em tempo real
+- [x] Prediction API: inferência em tempo real, com histórico e probabilidade
 - [ ] Deploy na AWS
 - [ ] Autenticação e gerenciamento de usuários
 - [ ] Versionamento de modelos

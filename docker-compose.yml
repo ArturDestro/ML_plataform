@@ -42,11 +42,7 @@ services:
     container_name: mlplat-frontend
     restart: unless-stopped
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8000
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-      - /app/.next
+      NEXT_PUBLIC_API_URL: http://18.222.139.172:8000
     ports:
       - "3000:3000"
     depends_on:

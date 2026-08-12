@@ -79,3 +79,6 @@ htmlcov/
 
 # AWS
 *.pem
+
+#build local
+docker-compose.override.yml

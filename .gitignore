@@ -76,3 +76,6 @@ desktop.ini
 htmlcov/
 .mypy_cache/
 .ruff_cache/
+
+# AWS
+*.pem

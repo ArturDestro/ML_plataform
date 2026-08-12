@@ -4,9 +4,16 @@ Uma plataforma web para o ciclo completo de vida de modelos de Machine Learning:
 
 O projeto vai além do treinamento em notebook — o objetivo é demonstrar como um modelo treinado se transforma em um produto de software real, integrando backend, banco de dados, containerização e deploy em nuvem.
 
+## Demo
+
+🔗 **Aplicação no ar:** [http://18.222.139.172:3000](http://18.222.139.172:3000)
+📄 **Documentação da API (Swagger):** [http://18.222.139.172:8000/docs](http://18.222.139.172:8000/docs)
+
+> A aplicação está hospedada em uma instância EC2 (AWS) e pode não estar disponível permanentemente. Veja a seção [Como rodar localmente](#como-rodar-localmente) para executar o projeto por conta própria.
+
 ## Status
 
-🚧 Em desenvolvimento ativo.
+✅ Projeto completo — todas as fases do ciclo de vida de ML implementadas e em produção.
 
 | Feature | Status |
 | --- | --- |
@@ -17,7 +24,7 @@ O projeto vai além do treinamento em notebook — o objetivo é demonstrar como
 | Treinamento de modelos (Logistic Regression, Random Forest) | ✅ |
 | Avaliação de métricas (Accuracy, Precision, Recall, F1) | ✅ |
 | API de predição (com histórico e probabilidade) | ✅ |
-| Deploy na AWS | ⏳ |
+| Deploy na AWS (EC2 + Docker Compose) | ✅ |
 
 ## Arquitetura
 
@@ -44,7 +51,7 @@ O projeto vai além do treinamento em notebook — o objetivo é demonstrar como
 - **Machine Learning:** Scikit-Learn, Pandas, Joblib
 - **Frontend:** Next.js, Tailwind CSS
 - **Banco de dados:** PostgreSQL
-- **Infraestrutura:** Docker, Docker Compose, AWS
+- **Infraestrutura:** Docker, Docker Compose, AWS EC2
 
 ## Funcionalidades principais
 
@@ -54,6 +61,7 @@ O projeto vai além do treinamento em notebook — o objetivo é demonstrar como
 - Serialização de modelos treinados com Joblib
 - API REST para inferência em tempo real, com probabilidade/confiança do resultado
 - Histórico de predições persistido em PostgreSQL
+- Deploy completo em nuvem (AWS EC2), com build de produção otimizado
 
 ## Como rodar localmente
 
@@ -79,6 +87,8 @@ O projeto vai além do treinamento em notebook — o objetivo é demonstrar como
    docker compose up --build
    ```
 
+   > Em desenvolvimento local, um arquivo `docker-compose.override.yml` (não versionado) habilita hot-reload no frontend e aponta a API para `localhost`. Sem esse arquivo, o projeto sobe usando a configuração de produção (build otimizado do Next.js).
+
 4. Aplique as migrations do banco (primeira vez apenas):
    ```bash
    docker compose exec backend alembic upgrade head
@@ -98,7 +108,7 @@ mlplat/
 │   ├── requirements.txt
 │   ├── alembic.ini
 │   └── app/
-│       ├── main.py              # monta a aplicação e registra as rotas
+│       ├── main.py              # monta a aplicação, CORS e registra as rotas
 │       ├── alembic/              # migrations do banco de dados
 │       ├── core/
 │       │   ├── config.py        # variáveis de ambiente (Pydantic Settings)
@@ -125,7 +135,7 @@ mlplat/
 │           └── predict.py        # carrega modelo salvo e executa inferência
 │
 ├── frontend/
-│   ├── Dockerfile
+│   ├── Dockerfile                # build de produção (next build + next start)
 │   ├── package.json
 │   ├── lib/
 │   │   └── api.ts                # chamadas HTTP centralizadas ao backend
@@ -140,10 +150,20 @@ mlplat/
 │       ├── Sidebar.tsx
 │       └── Navbar.tsx
 │
-├── docker-compose.yml
+├── docker-compose.yml            # configuração base (usada em produção)
+├── docker-compose.override.yml   # sobrescreve para dev local (não versionado)
 ├── .env.example
 └── README.md
 ```
+
+## Deploy
+
+A aplicação está hospedada em uma instância **EC2 (t3.small)** na AWS, rodando os três serviços (frontend, backend, banco de dados) via Docker Compose. Pontos importantes da configuração de produção:
+
+- O frontend roda com build otimizado do Next.js (`next build` + `next start`), não em modo desenvolvimento.
+- A variável `NEXT_PUBLIC_API_URL` é injetada como *build argument* do Docker, já que variáveis `NEXT_PUBLIC_*` do Next.js precisam existir no momento do build, não apenas em runtime.
+- CORS configurado no backend para aceitar requisições da origem pública do frontend.
+- Banco de dados PostgreSQL e modelos treinados (`.joblib`) persistidos em volumes Docker nomeados.
 
 ## Roadmap / Próximos passos
 
@@ -152,7 +172,7 @@ mlplat/
 - [x] Training: treino de modelos e persistência via Joblib
 - [x] Métricas: Accuracy, Precision, Recall, F1-Score
 - [x] Prediction API: inferência em tempo real, com histórico e probabilidade
-- [ ] Deploy na AWS
+- [x] Deploy na AWS (EC2 + Docker Compose)
 - [ ] Autenticação e gerenciamento de usuários
 - [ ] Versionamento de modelos
 - [ ] Tuning de hiperparâmetros com GridSearchCV
